@@ -1,12 +1,14 @@
 #!/bin/bash
 
 items=()
+WORKDIR=$(pwd)
 
 parse() {
+    cd "$2"
     while read item; do
         item_sel=$(echo "$item" | awk -F"|" '{print $2}')
-        chmod +x "scriptlets/$item_sel.sh"
-        bash "scriptlets/$item_sel.sh"
+        chmod +x "./scriptlets/${item_sel}.sh"
+        bash "./scriptlets/${item_sel}.sh"
     done <<< "$1"
 }
 
@@ -23,8 +25,12 @@ main() {
     if [[ ! -n "$selection" ]]; then
         exit 0
     else 
-        parse "$selection"
+        pkexec ./gui parse "$(printf "%s|" "$selection")" "$WORKDIR"
     fi
 }
 
-main
+if [[ "$1" == "parse" ]]; then
+    parse "$2" "$3"
+else
+    main
+fi
