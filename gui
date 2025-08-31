@@ -1,0 +1,30 @@
+#!/bin/bash
+
+items=()
+
+parse() {
+    while read item; do
+        item_sel=$(echo "$item" | awk -F"|" '{print $2}')
+        chmod +x "scriptlets/$item_sel.sh"
+        bash "scriptlets/$item_sel.sh"
+    done <<< "$1"
+}
+
+main() {
+    content=$(ls scriptlets)
+    while read item; do
+        items+=("FALSE" "$(echo $item | sed 's/.sh//g')")
+    done <<< "$content" #scriptlets/list
+
+    selection=$(yad --title="LinuxPatcher" --list --text="Run the following useful scripts to fix annoying problems in programs" \
+        --column="Select" --column="Name" --checklist  "${items[@]}" --width=400 --height=600 --center \
+        --icon-size="48" --image="computer" --keep-icon-size --image-on-top --compact)
+
+    if [[ ! -n "$selection" ]]; then
+        exit 0
+    else 
+        parse "$selection"
+    fi
+}
+
+main
