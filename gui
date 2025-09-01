@@ -2,11 +2,11 @@
 
 items=()
 
-if [ -e "gui" ]; then
+if [ -d "scriptlets" ]; then
     cd $(pwd)
 else
     cd "$HOME/LinuxPatcher"
-    if [ -e "gui" ]; then
+    if [ -d "scriptlets" ]; then
         cd $(pwd)
     else
         cd "$HOME/.techguy16/LinuxPatcher"
