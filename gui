@@ -1,20 +1,21 @@
 #!/bin/bash
 
 items=()
+tagline="Select the following scripts to fix annoying problems with some applications."
 
-if [ -d "scriptlets" ]; then
-    cd $(pwd)
-else
-    cd "$HOME/LinuxPatcher"
+if [[ "$(whoami)" != "root" ]]; then
     if [ -d "scriptlets" ]; then
         cd $(pwd)
     else
-        cd "$HOME/.techguy16/LinuxPatcher"
+        cd "$HOME/LinuxPatcher"
+        if [ -d "scriptlets" ]; then
+            cd $(pwd)
+        else
+            cd "$HOME/.techguy16/LinuxPatcher"
+        fi
     fi
+    WORKDIR=$(pwd)
 fi
-WORKDIR=$(pwd)
-
-
 
 parse() {
     cd "$2"
@@ -31,9 +32,9 @@ main() {
         items+=("FALSE" "$(echo $item | sed 's/.sh//g')")
     done <<< "$content" #scriptlets/list
 
-    selection=$(yad --title="LinuxPatcher" --list --text="Run the following useful scripts to fix annoying problems in programs" \
+    selection=$(GDK_BACKEND=x11 yad --title="LinuxPatcher" --list --text="$tagline" \
         --column="Select" --column="Name" --checklist  "${items[@]}" --width=400 --height=600 --center \
-        --icon-size="48" --image="computer" --keep-icon-size --image-on-top --compact)
+        --icon-size="48" --image="computer" --keep-icon-size --image-on-top --compact --button="<b>Execute</b>!go-next:0")
 
     if [[ ! -n "$selection" ]]; then
         exit 0
