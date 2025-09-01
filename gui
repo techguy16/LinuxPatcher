@@ -1,7 +1,20 @@
 #!/bin/bash
 
 items=()
+
+if [ -e "gui" ]; then
+    cd $(pwd)
+else
+    cd "$HOME/LinuxPatcher"
+    if [ -e "gui" ]; then
+        cd $(pwd)
+    else
+        cd "$HOME/.techguy16/LinuxPatcher"
+    fi
+fi
 WORKDIR=$(pwd)
+
+
 
 parse() {
     cd "$2"
