@@ -15,6 +15,7 @@ if [[ "$(whoami)" != "root" ]]; then
         fi
     fi
     WORKDIR=$(pwd)
+    USERNAME=$(whoami)
 fi
 
 parse() {
@@ -22,7 +23,7 @@ parse() {
     while read item; do
         item_sel=$(echo "$item" | awk -F"|" '{print $2}')
         chmod +x "./scriptlets/${item_sel}.sh"
-        bash "./scriptlets/${item_sel}.sh"
+        bash "./scriptlets/${item_sel}.sh" "$3"
     done <<< "$1"
 }
 
@@ -39,12 +40,12 @@ main() {
     if [[ ! -n "$selection" ]]; then
         exit 0
     else 
-        pkexec ./gui parse "$(printf "%s|" "$selection")" "$WORKDIR"
+        pkexec ./gui parse "$(printf "%s|" "$selection")" "$WORKDIR" "$USERNAME"
     fi
 }
 
 if [[ "$1" == "parse" ]]; then
-    parse "$2" "$3"
+    parse "$2" "$3" "$4"
 else
     main
 fi
