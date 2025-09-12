@@ -11,6 +11,12 @@ You can install LinuxPatcher using one of two ways:
 * Using [LinStore](https://github.com/techguy16/LinStore) (**recommended**)
 * Manually (see below)
 
+#### Installing using LinStore
+1. Install LinStore using the command in [the README](https://github.com/techguy16/LinStore)
+2. Open LinStore
+3. Navigate to **System Management**, then **LinuxPatcher**
+4. Press "Install"
+
 #### Installing manually
 ```bash
 git clone https://github.com/techguy16/LinuxPatcher ~/LinuxPatcher
